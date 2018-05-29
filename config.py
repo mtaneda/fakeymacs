@@ -727,7 +727,7 @@ def configure(keymap):
 
     def new_tab(): # mtaneda (Chrome のタブを開く)
         self_insert_command("D-Ctrl", "t")()
-        delya(0.1)
+        delay(0.1)
         self_insert_command("U-Ctrl")()
 
     def universal_argument():
