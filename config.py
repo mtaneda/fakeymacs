@@ -181,10 +181,12 @@ def configure(keymap):
     not_clipboard_target = ["EXCEL.EXE"]          # Excel
 
     # 日本語キーボードかどうかを指定する（True: 日本語キーボード、False: 英語キーボード）
-    is_japanese_keyboard = True
+    #is_japanese_keyboard = True
+    is_japanese_keyboard = False # mtaneda
 
     # 左右どちらの Ctrlキーを使うかを指定する（"L": 左、"R": 右）
-    side_of_ctrl_key = "L"
+    #side_of_ctrl_key = "L"
+    side_of_ctrl_key = "R" # mtaneda
 
     # 左右どちらの Altキーを使うかを指定する（"L": 左、"R": 右）
     side_of_alt_key = "L"
@@ -194,7 +196,7 @@ def configure(keymap):
     use_region_reset = True
 
     # emacs日本語入力モードを使うかどうかを指定する（True: 使う、False: 使わない）
-    use_emacs_ime_mode = True
+    use_emacs_ime_mode = False
 
     # emacs日本語入力モードを切り替える（トグルする）キーを指定する
     # toggle_emacs_ime_mode_key = None
@@ -212,10 +214,12 @@ def configure(keymap):
     toggle_input_method_key = ["C-Yen", "C-o"]
 
     # C-iキーを Tabキーとして使うかどうかを指定する（True: 使う、False: 使わない）
-    use_ctrl_i_as_tab = True
+    #use_ctrl_i_as_tab = True
+    use_ctrl_i_as_tab = False # mtaneda
 
     # Escキーを Metaキーとして使うかどうかを指定する（True: 使う、False: 使わない）
-    use_esc_as_meta = True
+    #use_esc_as_meta = True
+    use_esc_as_meta = False # mtaneda
 
     # Ctl-xプレフィックスキーに使うキーを指定する
     # （Ctl-xプレフィックスキーのモディファイアキーは、Ctrl または Alt のいずれかから指定してください）
@@ -223,16 +227,19 @@ def configure(keymap):
 
     # スクロールに使うキーの組み合わせ（Up、Down の順）を指定する
     # scroll_key = None # PageUp、PageDownキーのみを利用する
-    scroll_key = ["M-v", "C-v"]
+    #scroll_key = ["M-v", "C-v"]
+    scroll_key = [None, "C-v"] # mtaneda
 
     # 表示しているウィンドウの中で、一番最近までフォーカスがあったウィンドウに移動するキーを指定する
     other_window_key = "A-o"
 
     # クリップボードリストを起動するキーを指定する
-    clipboardList_key = "A-y"
+    #clipboardList_key = "A-y"
+    clipboardList_key = "A-W-c" # mtaneda
 
     # ランチャーリストを起動するキーを指定する
-    lancherList_key = "A-l"
+    #lancherList_key = "A-l"
+    lancherList_key = "C-Slash" # mtaneda
 
     # アクティブウィンドウを切り替えるキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （内部で A-Tab による切り替えを行っているため、設定するキーは Altキーとの組み合わせとしてください）
@@ -240,7 +247,8 @@ def configure(keymap):
     #   Alt + 矢印キーでもウィンドウを切り替えることができます。また、A-g もしくは A-Esc で切り替え画面の
     #   終了（キャンセル）となり、Altキーを離すか A-Enter で切り替えるウィンドウの確定となります。）
     # window_switching_key = None # A-S-Tab、A-Tabキーのみを利用する
-    window_switching_key = [["A-p", "A-n"]]
+    #window_switching_key = [["A-p", "A-n"]]
+    window_switching_key = None # mtaneda
 
     # アクティブウィンドウをディスプレイ間で移動するキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （other_window_key に割り当てている A-o との連係した利用を想定し、A-S-o も割り当てています）
@@ -255,11 +263,13 @@ def configure(keymap):
     # 仮想デスクトップを切り替えるキーの組み合わせ（前、後 の順）を指定する（複数指定可）
     # （デフォルトキーは、["W-C-Left", "W-C-Right"]）
     # desktop_switching_key = None # for Windows 7 or 8.1
-    desktop_switching_key = [["A-C-b", "A-C-f"], ["A-C-Left", "A-C-Right"]] # for Windows 10
-
+    #desktop_switching_key = [["A-C-b", "A-C-f"], ["A-C-Left", "A-C-Right"]] # for Windows 10
+    desktop_switching_key = None # mtaneda
+    
     # IME の「単語登録」プログラムを起動するキーを指定する
     # word_register_key = None
-    word_register_key = "C-CloseBracket"
+    #word_register_key = "C-CloseBracket"
+    word_register_key = None # mtaneda
 
     # IME の「単語登録」プログラムとそのパラメータを指定する（for Google日本語入力）
     # word_register_name = r"C:\Program Files\Google\Google Japanese Input\GoogleIMEJaTool.exe"
@@ -710,6 +720,11 @@ def configure(keymap):
         delay(0.1)
         self_insert_command("U-Alt")()
 
+    def kill_tab():
+        self_insert_command("D-Ctrl", "w")()
+        delay(0.1)
+        self_insert_command("U-Ctrl")()
+
     def universal_argument():
         if fakeymacs.is_universal_argument:
             if fakeymacs.is_digit_argument:
@@ -740,6 +755,11 @@ def configure(keymap):
 
         if not fakeymacs.is_executing_command:
             keymap.ShellExecuteCommand(None, command_name, "", "")()
+
+    def select_all():
+        self_insert_command("D-Ctrl", "a")()
+        delay(0.1)
+        self_insert_command("U-Ctrl")()       
 
     ##################################################
     ## 共通関数
@@ -1085,7 +1105,9 @@ def configure(keymap):
     define_key(keymap_emacs, "C-k",      reset_search(reset_undo(reset_counter(reset_mark(repeat3(kill_line))))))
     define_key(keymap_emacs, "C-w",      reset_search(reset_undo(reset_counter(reset_mark(kill_region)))))
     define_key(keymap_emacs, "M-w",      reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save)))))
+    define_key(keymap_emacs, "A-c",      reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save)))))
     define_key(keymap_emacs, "C-y",      reset_search(reset_undo(reset_counter(reset_mark(repeat(yank))))))
+    define_key(keymap_emacs, "A-v",      reset_search(reset_undo(reset_counter(reset_mark(repeat(yank))))))
     define_key(keymap_emacs, "C-Slash",  reset_search(reset_counter(reset_mark(undo))))
     define_key(keymap_emacs, "Ctl-x u",  reset_search(reset_counter(reset_mark(undo))))
 
@@ -1121,7 +1143,7 @@ def configure(keymap):
     define_key(keymap_emacs, "Ctl-x o", reset_search(reset_undo(reset_counter(reset_mark(other_window)))))
 
     ## 「文字列検索 / 置換」のキー設定
-    define_key(keymap_emacs, "C-r",   reset_undo(reset_counter(reset_mark(isearch_backward))))
+    #define_key(keymap_emacs, "C-r",   reset_undo(reset_counter(reset_mark(isearch_backward))))
     define_key(keymap_emacs, "C-s",   reset_undo(reset_counter(reset_mark(isearch_forward))))
     define_key(keymap_emacs, "M-S-5", reset_search(reset_undo(reset_counter(reset_mark(query_replace)))))
 
@@ -1142,7 +1164,9 @@ def configure(keymap):
     define_key(keymap_emacs, "Tab",       reset_undo(reset_counter(reset_mark(repeat(indent_for_tab_command)))))
     define_key(keymap_emacs, "C-g",       reset_search(reset_counter(reset_mark(keyboard_quit))))
     define_key(keymap_emacs, "Ctl-x C-c", reset_search(reset_undo(reset_counter(reset_mark(kill_emacs)))))
+    define_key(keymap_emacs, "A-w",       reset_search(reset_undo(reset_counter(reset_mark(kill_tab)))))
     define_key(keymap_emacs, "M-S-1",     reset_search(reset_undo(reset_counter(reset_mark(shell_command)))))
+    define_key(keymap_emacs, "A-a",       reset_search(reset_undo(reset_counter(reset_mark(select_all)))))
 
     if use_ctrl_i_as_tab:
         define_key(keymap_emacs, "C-i", reset_undo(reset_counter(reset_mark(repeat(indent_for_tab_command)))))
