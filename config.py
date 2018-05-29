@@ -228,7 +228,7 @@ def configure(keymap):
     # スクロールに使うキーの組み合わせ（Up、Down の順）を指定する
     # scroll_key = None # PageUp、PageDownキーのみを利用する
     #scroll_key = ["M-v", "C-v"]
-    scroll_key = [None, "C-v"] # mtaneda
+    scroll_key = ["", "C-v"] # mtaneda
 
     # 表示しているウィンドウの中で、一番最近までフォーカスがあったウィンドウに移動するキーを指定する
     other_window_key = "A-o"
@@ -265,7 +265,7 @@ def configure(keymap):
     # desktop_switching_key = None # for Windows 7 or 8.1
     #desktop_switching_key = [["A-C-b", "A-C-f"], ["A-C-Left", "A-C-Right"]] # for Windows 10
     desktop_switching_key = None # mtaneda
-    
+
     # IME の「単語登録」プログラムを起動するキーを指定する
     # word_register_key = None
     #word_register_key = "C-CloseBracket"
@@ -720,9 +720,14 @@ def configure(keymap):
         delay(0.1)
         self_insert_command("U-Alt")()
 
-    def kill_tab():
+    def kill_tab(): # mtaneda (Chrome のタブを閉じる)
         self_insert_command("D-Ctrl", "w")()
         delay(0.1)
+        self_insert_command("U-Ctrl")()
+
+    def new_tab(): # mtaneda (Chrome のタブを開く)
+        self_insert_command("D-Ctrl", "t")()
+        delya(0.1)
         self_insert_command("U-Ctrl")()
 
     def universal_argument():
@@ -756,7 +761,7 @@ def configure(keymap):
         if not fakeymacs.is_executing_command:
             keymap.ShellExecuteCommand(None, command_name, "", "")()
 
-    def select_all():
+    def select_all(): # mtaneda (Mac風全選択)
         self_insert_command("D-Ctrl", "a")()
         delay(0.1)
         self_insert_command("U-Ctrl")()       
@@ -1105,9 +1110,9 @@ def configure(keymap):
     define_key(keymap_emacs, "C-k",      reset_search(reset_undo(reset_counter(reset_mark(repeat3(kill_line))))))
     define_key(keymap_emacs, "C-w",      reset_search(reset_undo(reset_counter(reset_mark(kill_region)))))
     define_key(keymap_emacs, "M-w",      reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save)))))
-    define_key(keymap_emacs, "A-c",      reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save)))))
+    define_key(keymap_emacs, "A-c",      reset_search(reset_undo(reset_counter(reset_mark(kill_ring_save))))) # mtaneda (Mac風コピー)
     define_key(keymap_emacs, "C-y",      reset_search(reset_undo(reset_counter(reset_mark(repeat(yank))))))
-    define_key(keymap_emacs, "A-v",      reset_search(reset_undo(reset_counter(reset_mark(repeat(yank))))))
+    define_key(keymap_emacs, "A-v",      reset_search(reset_undo(reset_counter(reset_mark(repeat(yank)))))) # mtaneda (Mac風ペースト)
     define_key(keymap_emacs, "C-Slash",  reset_search(reset_counter(reset_mark(undo))))
     define_key(keymap_emacs, "Ctl-x u",  reset_search(reset_counter(reset_mark(undo))))
 
@@ -1143,7 +1148,7 @@ def configure(keymap):
     define_key(keymap_emacs, "Ctl-x o", reset_search(reset_undo(reset_counter(reset_mark(other_window)))))
 
     ## 「文字列検索 / 置換」のキー設定
-    #define_key(keymap_emacs, "C-r",   reset_undo(reset_counter(reset_mark(isearch_backward))))
+    #define_key(keymap_emacs, "C-r",   reset_undo(reset_counter(reset_mark(isearch_backward)))) # mtaneda (C-r は別件でよく使うため)
     define_key(keymap_emacs, "C-s",   reset_undo(reset_counter(reset_mark(isearch_forward))))
     define_key(keymap_emacs, "M-S-5", reset_search(reset_undo(reset_counter(reset_mark(query_replace)))))
 
@@ -1164,9 +1169,10 @@ def configure(keymap):
     define_key(keymap_emacs, "Tab",       reset_undo(reset_counter(reset_mark(repeat(indent_for_tab_command)))))
     define_key(keymap_emacs, "C-g",       reset_search(reset_counter(reset_mark(keyboard_quit))))
     define_key(keymap_emacs, "Ctl-x C-c", reset_search(reset_undo(reset_counter(reset_mark(kill_emacs)))))
-    define_key(keymap_emacs, "A-w",       reset_search(reset_undo(reset_counter(reset_mark(kill_tab)))))
+    define_key(keymap_emacs, "A-w",       reset_search(reset_undo(reset_counter(reset_mark(kill_tab))))) # mtaneda (Chrome のタブを閉じる)
     define_key(keymap_emacs, "M-S-1",     reset_search(reset_undo(reset_counter(reset_mark(shell_command)))))
-    define_key(keymap_emacs, "A-a",       reset_search(reset_undo(reset_counter(reset_mark(select_all)))))
+    define_key(keymap_emacs, "A-a",       reset_search(reset_undo(reset_counter(reset_mark(select_all))))) # mtaneda (Mac風全選択)
+    define_key(keymap_emacs, "A-a",       reset_search(reset_undo(reset_counter(reset_mark(new_tab))))) # mtaneda (Chrome のタブを開く)    
 
     if use_ctrl_i_as_tab:
         define_key(keymap_emacs, "C-i", reset_undo(reset_counter(reset_mark(repeat(indent_for_tab_command)))))
